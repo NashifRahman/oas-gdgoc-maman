@@ -1,0 +1,12 @@
+openapi: "3.0.2"
+
+info:
+  title: Template API Documentation
+  description: Manage API endpoints.
+  version: 0.0.1
+
+servers:
+  - url: http://localhost:3000
+
+paths:
+  # Write your own API endpoints
