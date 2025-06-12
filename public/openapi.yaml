@@ -77,7 +77,8 @@ paths:
                   type: number
                   example: 50
                 reading:
-                  type: true
+                  type: boolean
+                  example: true
               required:
                 - name
                 - year
