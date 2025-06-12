@@ -57,20 +57,36 @@ paths:
               properties:
                 name:
                   type: string
+                  example: "Buku A"
                 year:
                   type: number
+                  example: 2023
                 author:
                   type: string
+                  example: "John Doe"
                 summary:
                   type: string
+                  example: "Ini adalah ringkasan buku A."
                 publisher:
                   type: string
+                  example: "Dicoding Indonesia"
                 pageCount:
                   type: number
+                  example: 200
                 readPage:
                   type: number
+                  example: 50
                 reading:
-                  type: boolean
+                  type: true
+              required:
+                - name
+                - year
+                - author
+                - summary
+                - publisher
+                - pageCount
+                - readPage
+                - reading
       responses:
         201:
           description: Buku berhasil ditambahkan
