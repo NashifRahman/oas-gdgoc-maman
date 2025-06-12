@@ -1,83 +1,351 @@
 openapi: "3.0.2"
 
 info:
-  title: Template API Documentation
-  description: Manage API endpoints.
+  title: Mamans Fam API Documentation
+  description: |
+    API ini digunakan untuk mengelola buku. Anda dapat menambahkan, memperbarui, menghapus, dan mengambil daftar buku.
+    Berikut adalah beberapa endpoint yang tersedia:
+    - `GET /books`: Mengambil daftar buku.
+    - `POST /books`: Menambahkan buku baru.
+    - `GET /books/{bookId}`: Mengambil buku berdasarkan ID.
+    - `PUT /books/{bookId}`: Memperbarui buku berdasarkan ID.
+    - `DELETE /books/{bookId}`: Menghapus buku berdasarkan ID.
+
   version: 0.0.1
 
 servers:
-  - url: http://localhost:3000
+  - url: http://localhost:9000
 
 paths:
   # Write your own API endpoints
-  /buku:
-    # endpoint GET /buku
+  /books:
+    # endpoint GET /books
     get:
       tags:
-        - Buku
+        - books
       responses:
         200:
+          description: Berhasil mengambil daftar buku
           content:
-    # endpoint POST /buku
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+              example:
+                status: "success"
+                data:
+                  books:
+                    - id: "Qbax5Oy7L8WKf741"
+                      name: "Buku A"
+                      publisher: "Dicoding Indonesia"
+                    - id: "1L77tDUFeGs7VlEt"
+                      name: "Buku B"
+                      publisher: "Dicoding Indonesia"
+                    - id: "K8DZbJf-t3LrY71D"
+                      name: "Buku C"
+                      publisher: "Dicoding Indonesia"
+    # endpoint POST /books
     post:
+      summary: Penyimpanan buku baru
       tags:
-        - Buku
+        - books
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               type: object
               properties:
-                judul:
+                name:
                   type: string
-                  example: "Domain Driven Design"
-                penulis:
+                year:
+                  type: number
+                author:
                   type: string
-                  example: "Eric Evans"
+                summary:
+                  type: string
+                publisher:
+                  type: string
+                pageCount:
+                  type: number
+                readPage:
+                  type: number
+                reading:
+                  type: boolean
       responses:
-        200:
+        201:
+          description: Buku berhasil ditambahkan
           content:
-  /buku/{id}:
-    # endpoint GET /buku/{id}
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Buku berhasil ditambahkan"
+                  data:
+                    type: object
+                    properties:
+                      bookId:
+                        type: string
+                        example: "1L7ZtDUFeGs7V1Et"
+        400:
+          description: Bad Request -Client Error
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      status:
+                        type: string
+                        example: "fail"
+                      message:
+                        type: string
+                        example: "Gagal menambahkan buku. Mohon isi nama buku"
+                  - type: object
+                    properties:
+                      status:
+                        type: string
+                        example: "fail"
+                      message:
+                        type: string
+                        example: "Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount"
+  /books/{bookId}:
+    # endpoint GET /books/{bookId}
     get:
+      summary: Mendapatkan buku berdasarkan ID
       tags:
-        - Buku
+        - books
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: bookId
+          required: true
           schema:
-            type: integer
+            type: string
+          description: ID buku yang ingin diambil
       responses:
         200:
+          description: Buku berhasil ditemukan
           content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/tampilkan"
+              example:
+                status: "success"
+                data:
+                  books:
+                    - name: "Buku A"
+                      year: "2023"
+                      author: "John Doe"
+                      summary: "Ini adalah ringkasan buku A."
+                      publisher: "Dicoding Indonesia"
+                      pageCount: 200
+                      readPage: 50
+                      reading: true
+                      insertedAt: "2023-10-01T12:00:00.000Z"
+                      updatedAt: "2023-10-01T12:00:00.000Z"
+
+        404:
+          description: Buku tidak ditemukan
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "fail"
+                  message:
+                    type: string
+                    example: "Buku tidak ditemukan"
     put:
+      summary: Memperbarui buku berdasarkan ID
       tags:
-        - Buku
+        - books
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: bookId
+          required: true
           schema:
-            type: integer
+            type: string
+          description: ID buku yang ingin diperbarui
       requestBody:
+        required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                judul:
-                  type: string
-                  example: "Domain-Driven Design: Tackling Complexity in the Heart of Software"
-                penulis:
-                  type: string
-                  example: "Eric Evans"
+              $ref: "#/components/schemas/penamaan"
+            example:
+              name: "Buku A"
+              year: "2023"
+              author: "John Doe"
+              summary: "Ini adalah ringkasan buku A."
+              publisher: "Dicoding Indonesia"
+              pageCount: 200
+              readPage: 50
+              reading: true
+                  
       responses:
         200:
+          description: Buku berhasil diperbarui
           content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Buku berhasil diperbarui"
+        400:
+          description: Bad Request -Client Error
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      status:
+                        type: string
+                        example: "fail"
+                      message:
+                        type: string
+                        example: "Gagal memperbarui buku. Mohon isi nama buku"
+                  - type: object
+                    properties:
+                      status:
+                        type: string
+                        example: "fail"
+                      message:
+                        type: string
+                        example: "Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount"
+                  - type: object
+                    properties:
+                      status:
+                        type: string
+                        example: "fail"
+                      message:
+                        type: string
+                        example: "Gagal memperbarui buku. Id tidak ditemukan"
     delete:
+      summary: Menghapus buku berdasarkan ID
       tags:
-        - Buku
+        - books
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: bookId
+          required: true
           schema:
-            type: integer
+            type: string
+          description: ID buku yang ingin dihapus
+      responses:
+        200:
+          description: Buku berhasil dihapus
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  message:
+                    type: string
+                    example: "Buku berhasil dihapus"
+        404:
+          description: Buku tidak ditemukan
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "fail"
+                  message:
+                    type: string
+                    example: "Buku tidak ditemukan"
+
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        data:
+          type: object
+          properties:
+            books:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  publisher:
+                    type: string
+    penamaan:
+      type: object
+      properties:
+        name:
+          type: string
+        year:
+          type: string
+        author:
+          type: string
+        summary:
+          type: string
+        publisher:
+          type: string
+        pageCount:
+          type: number
+        readPage:
+          type: number
+        reading:
+          type: boolean
+
+    tampilkan:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        data:
+          type: object
+          properties:
+            books:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  year:
+                    type: string
+                  author:
+                    type: string
+                  summary:
+                    type: string
+                  publisher:
+                    type: string
+                  pageCount:
+                    type: number
+                  readPage:
+                    type: number
+                  reading:
+                    type: boolean
+                  insertedAt:
+                    type: string
+                    format: date-time
+                  updatedAt:
+                    type: string
+                    format: date-time
