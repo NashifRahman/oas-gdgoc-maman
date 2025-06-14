@@ -15,6 +15,7 @@ info:
 
 servers:
   - url: http://localhost:9000
+  - url: https://spirited-tenderness-production.up.railway.app
 
 paths:
   # Write your own API endpoints
@@ -64,30 +65,15 @@ paths:
                 author:
                   type: string
                   example: "John Doe"
-                summary:
-                  type: string
-                  example: "Ini adalah ringkasan buku A."
                 publisher:
                   type: string
                   example: "Dicoding Indonesia"
-                pageCount:
+                summary:
+                  type: string
+                  example: "Ini adalah ringkasan buku A."
+                page_count:
                   type: number
                   example: 200
-                readPage:
-                  type: number
-                  example: 50
-                reading:
-                  type: boolean
-                  example: true
-              required:
-                - name
-                - year
-                - author
-                - summary
-                - publisher
-                - pageCount
-                - readPage
-                - reading
       responses:
         201:
           description: Buku berhasil ditambahkan
@@ -129,7 +115,7 @@ paths:
                         example: "fail"
                       message:
                         type: string
-                        example: "Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount"
+                        example: "Gagal menambahkan buku. read_page tidak boleh lebih besar dari page_count"
   /books/{bookId}:
     # endpoint GET /books/{bookId}
     get:
@@ -159,8 +145,8 @@ paths:
                       author: "John Doe"
                       summary: "Ini adalah ringkasan buku A."
                       publisher: "Dicoding Indonesia"
-                      pageCount: 200
-                      readPage: 50
+                      page_count: 200
+                      read_page: 50
                       reading: true
                       insertedAt: "2023-10-01T12:00:00.000Z"
                       updatedAt: "2023-10-01T12:00:00.000Z"
@@ -201,8 +187,8 @@ paths:
               author: "John Doe"
               summary: "Ini adalah ringkasan buku A."
               publisher: "Dicoding Indonesia"
-              pageCount: 200
-              readPage: 50
+              page_count: 200
+              read_page: 50
               reading: true
                   
       responses:
@@ -240,7 +226,7 @@ paths:
                         example: "fail"
                       message:
                         type: string
-                        example: "Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount"
+                        example: "Gagal memperbarui buku. read_page tidak boleh lebih besar dari page_count"
                   - type: object
                     properties:
                       status:
@@ -323,9 +309,9 @@ components:
           type: string
         publisher:
           type: string
-        pageCount:
+        page_count:
           type: number
-        readPage:
+        read_page:
           type: number
         reading:
           type: boolean
@@ -354,9 +340,9 @@ components:
                     type: string
                   publisher:
                     type: string
-                  pageCount:
+                  page_count:
                     type: number
-                  readPage:
+                  read_page:
                     type: number
                   reading:
                     type: boolean
